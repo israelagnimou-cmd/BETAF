@@ -1,0 +1,46 @@
+{
+  "name": "betaf-studio",
+  "version": "1.0.0",
+  "description": "Application desktop de gestion documentaire pour BETAF",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "electron .",
+    "server": "node server/server.cjs",
+    "api:install": "python -m pip install -r api/requirements.txt",
+    "api:dev": "python -m uvicorn main:app --app-dir api --reload --host 127.0.0.1 --port 3001",
+    "api:migrate-sqlite": "python -m api.migrate_sqlite",
+    "server:install": "powershell -ExecutionPolicy Bypass -File server/install-server.ps1",
+    "server:backup": "powershell -ExecutionPolicy Bypass -File server/backup-server.ps1",
+    "dist": "npm run build && electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^32.2.0",
+    "electron-builder": "^25.0.5",
+    "vite": "^5.4.8"
+  },
+  "build": {
+    "appId": "ci.betaf.studio",
+    "productName": "BETAF Studio",
+    "files": [
+      "dist/**/*",
+      "build/**/*",
+      "electron/**/*",
+      "server/**/*"
+    ],
+    "win": {
+      "icon": "build/betaf.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "installerIcon": "build/betaf.ico",
+      "uninstallerIcon": "build/betaf.ico"
+    }
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "dompurify": "^3.2.6",
+    "mammoth": "^1.9.0"
+  }
+}

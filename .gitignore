@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.*
+!api/.env.example
+server/data/
+api/*.sqlite*
+**/__pycache__/
+.pytest_cache/
+.venv/
