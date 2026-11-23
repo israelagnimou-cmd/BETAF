@@ -230,19 +230,25 @@ def _database_url() -> str:
 def _upgrade_schema(engine: Engine) -> None:
     Base.metadata.create_all(engine)
     user_columns = {column["name"] for column in inspect(engine).get_columns("users")}
+    is_postgresql = engine.dialect.name == "postgresql"
+    boolean_true = "TRUE" if is_postgresql else "1"
+    boolean_false = "FALSE" if is_postgresql else "0"
     column_definitions = {
         "phone": "VARCHAR(40) NULL",
         "email": "VARCHAR(254) NULL",
-        "is_active": "BOOLEAN NOT NULL DEFAULT 1",
-        "is_archived": "BOOLEAN NOT NULL DEFAULT 0",
-        "must_change_password": "BOOLEAN NOT NULL DEFAULT 0",
+        "is_active": f"BOOLEAN NOT NULL DEFAULT {boolean_true}",
+        "is_archived": f"BOOLEAN NOT NULL DEFAULT {boolean_false}",
+        "must_change_password": f"BOOLEAN NOT NULL DEFAULT {boolean_false}",
     }
     with engine.begin() as connection:
         for name, definition in column_definitions.items():
             if name not in user_columns:
                 connection.execute(text(f"ALTER TABLE users ADD COLUMN {name} {definition}"))
         connection.execute(
-            text("UPDATE users SET role = 'manager', is_active = 0 WHERE role = 'viewer'")
+            text(
+                "UPDATE users SET role = 'manager', "
+                f"is_active = {boolean_false} WHERE role = 'viewer'"
+            )
         )
 
 
