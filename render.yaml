@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: betaf-api
+    runtime: docker
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: BETAF_DATABASE_URL
+        sync: false
+      - key: BETAF_ADMIN_USERNAME
+        value: admin
+      - key: BETAF_ADMIN_FULLNAME
+        value: Administrateur BETAF
+      - key: BETAF_ADMIN_PASSWORD
+        sync: false
+      - key: BETAF_CORS_ORIGINS
+        value: https://betaf.pages.dev
