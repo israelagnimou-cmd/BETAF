@@ -219,9 +219,11 @@ def _public_user(user: User) -> dict:
 def _database_url() -> str:
     url = os.getenv("BETAF_DATABASE_URL", "").strip()
     if not url:
-        raise RuntimeError("Définissez BETAF_DATABASE_URL avec une URL SQLite locale ou MySQL.")
-    if not url.startswith(("sqlite:///", "mysql+pymysql://")):
-        raise RuntimeError("BETAF_DATABASE_URL doit utiliser sqlite:/// ou mysql+pymysql://.")
+        raise RuntimeError("Définissez BETAF_DATABASE_URL avec une URL SQLite, MySQL ou PostgreSQL.")
+    if not url.startswith(("sqlite:///", "mysql+pymysql://", "postgresql://", "postgresql+psycopg://")):
+        raise RuntimeError("BETAF_DATABASE_URL doit utiliser sqlite:/// , mysql+pymysql:// ou postgresql://.")
+    if url.startswith("postgresql://"):
+        url = url.replace("postgresql://", "postgresql+psycopg://", 1)
     return url
 
 

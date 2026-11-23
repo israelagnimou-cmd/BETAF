@@ -8,7 +8,9 @@ services:
     healthCheckPath: /api/health
     envVars:
       - key: BETAF_DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: betaf-studio-db
+          property: connectionString
       - key: BETAF_ADMIN_USERNAME
         value: admin
       - key: BETAF_ADMIN_FULLNAME
@@ -17,3 +19,7 @@ services:
         sync: false
       - key: BETAF_CORS_ORIGINS
         value: https://betaf.pages.dev
+
+databases:
+  - name: betaf-studio-db
+    plan: free
