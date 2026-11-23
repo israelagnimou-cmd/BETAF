@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: betaf-api
+    name: betaf-studio-api-israel
     runtime: docker
     dockerfilePath: ./api/Dockerfile
     dockerContext: .
