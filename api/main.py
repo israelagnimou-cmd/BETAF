@@ -443,7 +443,12 @@ def create_app(
 
     @app.get("/api/health")
     def health():
-        database = "SQLite" if database_engine.dialect.name == "sqlite" else "MySQL"
+        database_names = {
+            "sqlite": "SQLite",
+            "mysql": "MySQL",
+            "postgresql": "PostgreSQL",
+        }
+        database = database_names.get(database_engine.dialect.name, database_engine.dialect.name)
         return {"ok": True, "service": "BETAF Studio API", "database": database}
 
     @app.post("/api/login")
