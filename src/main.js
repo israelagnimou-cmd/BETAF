@@ -1401,7 +1401,7 @@ function printBrandLegal() {
   return `<div class="betaf-legal">${escapeHtml(state.settings.footer || '')}</div>`;
 }
 function printExpandedFrameStyles() {
-  return `.page:before,.sheet:before{content:"";position:absolute;inset:8.5mm;border:3px double #222;pointer-events:none;z-index:0}`;
+  return `.page:before,.sheet:before{content:"";position:absolute;inset:6mm 5mm 5mm 6mm;border:3px double #222;pointer-events:none;z-index:0}`;
 }
 function printVillageBrandHeader(attestation) {
   const logo = `<img src="${state.settings.logo || betafLogoUrl}" alt="Logo BETAF">`;
@@ -1426,8 +1426,8 @@ function printVillageAttestation(doc, client) {
     @page{size:A4 portrait;margin:0}
     html,body{margin:0;padding:0;width:210mm;font-family:"Times New Roman",serif;color:#161616}
     body{display:flex;flex-direction:column;align-items:center}
-    .page{box-sizing:border-box;width:210mm;height:297mm;min-height:297mm;margin:0 auto;padding:15mm;position:relative;break-after:auto;page-break-after:auto}
-    .frame{box-sizing:border-box;position:relative;z-index:2;width:100%;height:267mm;min-height:267mm;margin:0 auto;padding:3.5mm;display:flex;flex-direction:column}
+    .page{box-sizing:border-box;width:210mm;height:297mm;min-height:297mm;margin:0 auto;padding:12.5mm 6.5mm 6.5mm 12.5mm;position:relative;break-after:auto;page-break-after:auto}
+    .frame{box-sizing:border-box;position:relative;z-index:2;width:100%;height:278mm;min-height:278mm;margin:0 auto;padding:3.5mm;display:flex;flex-direction:column}
     .village-brand{display:grid;grid-template-columns:23mm 1fr 27mm;align-items:center;gap:5mm;min-height:22mm;border-bottom:1px solid #4668ee;padding:0 2mm 1mm;text-align:center;color:#777}
     .village-logo{width:22mm;height:20mm;display:grid;place-items:center}
     .village-logo img{width:20mm;height:20mm;object-fit:contain}
@@ -1459,7 +1459,7 @@ function printVillageAttestation(doc, client) {
     .signature-name{margin-top:2mm}
     .date-line{margin-top:4mm;text-align:right;font-size:11pt;font-weight:700}
     .frame>.betaf-legal{margin-top:auto;margin-bottom:.9mm;font-size:9pt}
-    @media print{html,body{width:210mm;height:297mm;margin:0}.page{height:297mm;min-height:297mm;margin:0 auto;padding:15mm}.frame{height:267mm;min-height:267mm}}
+    @media print{html,body{width:210mm;height:297mm;margin:0}.page{height:297mm;min-height:297mm;margin:0 auto;padding:12.5mm 6.5mm 6.5mm 12.5mm}.frame{height:278mm;min-height:278mm}}
     ${printBrandStyles()}
     ${printExpandedFrameStyles()}
     .frame{position:relative;z-index:2}
@@ -1507,7 +1507,7 @@ function printCessionAttestation(doc, client) {
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;width:210mm;height:297mm;color:#171717;font-family:"Times New Roman",serif;background:#fff}
     body{display:flex;flex-direction:column;align-items:center}
-    .page{box-sizing:border-box;width:210mm;height:297mm;margin:0 auto;position:relative;display:flex;flex-direction:column;padding:18.5mm;break-after:auto;page-break-after:auto}
+    .page{box-sizing:border-box;width:210mm;height:297mm;margin:0 auto;position:relative;display:flex;flex-direction:column;padding:16mm 10mm 10mm 16mm;break-after:auto;page-break-after:auto}
     .attestation{box-sizing:border-box;position:relative;z-index:1;display:flex;flex:1 1 auto;flex-direction:column;min-height:0;width:100%}
     .attestation>.betaf-branding,.attestation>h1,.attestation>.body,.attestation>.place-date,.attestation>.signatures,.attestation>.betaf-legal{box-sizing:border-box;position:relative;z-index:1;width:100%;max-width:none;min-width:0;margin-left:0;margin-right:0}
     h1{text-align:center;text-transform:uppercase;text-decoration:underline;font-size:20pt;margin:8mm 0 10mm}
@@ -1522,7 +1522,7 @@ function printCessionAttestation(doc, client) {
     .signature-name{margin-top:12mm}
     .witness{grid-column:1/-1;width:50%;justify-self:center}
     .attestation>.betaf-legal{margin-top:auto}
-    @media print{html,body{margin:0;padding:0;width:210mm;height:297mm}.page{margin:0 auto;padding:18.5mm}}
+    @media print{html,body{margin:0;padding:0;width:210mm;height:297mm}.page{margin:0 auto;padding:16mm 10mm 10mm 16mm}}
     ${printBrandStyles()}
     ${printExpandedFrameStyles()}
   </style></head><body><main class="page">${printWatermark()}<article class="attestation">
@@ -1562,7 +1562,7 @@ function printSaleAttestation(doc, client) {
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;width:210mm;height:297mm;color:#171717;font-family:"Times New Roman",serif;background:#fff}
     body{display:flex;flex-direction:column;align-items:center}
-    .page{box-sizing:border-box;width:210mm;height:297mm;margin:0 auto;position:relative;display:flex;flex-direction:column;padding:18.5mm;break-after:auto;page-break-after:auto}
+    .page{box-sizing:border-box;width:210mm;height:297mm;margin:0 auto;position:relative;display:flex;flex-direction:column;padding:16mm 10mm 10mm 16mm;break-after:auto;page-break-after:auto}
     .attestation{box-sizing:border-box;position:relative;z-index:1;display:flex;flex:1 1 auto;flex-direction:column;min-height:0;width:100%}
     .attestation>.betaf-branding,.attestation>h1,.attestation>.body,.attestation>.place-date,.attestation>.signatures,.attestation>.betaf-legal{box-sizing:border-box;position:relative;z-index:1;width:100%;max-width:none;min-width:0;margin-left:0;margin-right:0}
     h1{text-align:center;text-transform:uppercase;text-decoration:underline;font-size:20pt;margin:8mm 0 10mm}
@@ -1576,7 +1576,7 @@ function printSaleAttestation(doc, client) {
     .signature-title{text-decoration:underline}
     .signature-name{margin-top:14mm}
     .attestation>.betaf-legal{margin-top:auto}
-    @media print{html,body{margin:0;padding:0;width:210mm;height:297mm}.page{margin:0 auto;padding:18.5mm}}
+    @media print{html,body{margin:0;padding:0;width:210mm;height:297mm}.page{margin:0 auto;padding:16mm 10mm 10mm 16mm}}
     ${printBrandStyles()}
     ${printExpandedFrameStyles()}
   </style></head><body><main class="page">${printWatermark()}<article class="attestation">
@@ -1626,7 +1626,7 @@ function printDocument(doc) {
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;width:210mm;min-height:297mm;background:#fff;color:#17213d;font-family:${state.settings.font},Arial,sans-serif}
     body{display:flex;flex-direction:column;align-items:center}
-    .sheet{box-sizing:border-box;width:210mm;min-height:297mm;margin:0 auto;position:relative;display:flex;flex-direction:column;padding:18.5mm}
+    .sheet{box-sizing:border-box;width:210mm;min-height:297mm;margin:0 auto;position:relative;display:flex;flex-direction:column;padding:16mm 10mm 10mm 16mm}
     .watermark{position:absolute;inset:0;overflow:hidden;display:grid;grid-template-columns:repeat(3,1fr);align-content:center;gap:35mm 12mm;transform:rotate(-28deg);opacity:${Number(state.settings.intensity) / 100};z-index:0;pointer-events:none}
     .watermark span{font-size:28px;font-weight:700;color:#4668ee;text-align:center}
     .content{position:relative;z-index:1;flex:1}
@@ -1647,7 +1647,7 @@ function printDocument(doc) {
     .made-at{text-align:right;margin:0 8px 2px 0;line-height:1.2}
     .signatures{display:flex;justify-content:space-between;margin-top:4px;text-align:center;font-size:10px;min-height:34mm}
     .signatures strong{text-decoration:underline}
-    @media print{html,body{width:210mm;min-height:297mm;margin:0}.sheet{margin:0 auto;padding:18.5mm}}
+    @media print{html,body{width:210mm;min-height:297mm;margin:0}.sheet{margin:0 auto;padding:16mm 10mm 10mm 16mm}}
     ${printExpandedFrameStyles()}
     </style></head><body><div class="sheet">${watermark}<div class="content"><div class="head">${logo}<div><h1>BETAF</h1><p>Bureau d’étude topographique et d’aménagement foncier</p></div></div><div class="services"><b>NOS PRESTATIONS :</b> ${services.map(escapeHtml).join(' · ')}</div><h2 class="title">${escapeHtml(doc.title)}</h2><div class="body"><div class="box">${clientRows}</div><div class="editor-content">${doc.content || '<p>Document établi par BETAF.</p>'}</div></div></div><div class="footer"><div class="made-at">Fait à ${escapeHtml(doc.city || state.settings.city)}, le ${escapeHtml(doc.date)}</div><div class="signatures"><span><strong>Le cessionnaire</strong></span><span><strong>Le Gérant</strong></span></div><div class="legal">${escapeHtml(state.settings.footer || '')}</div></div></div></body></html>`);
   printWindow.document.close(); printWindow.focus(); printWindow.onload = () => printWindow.print();
