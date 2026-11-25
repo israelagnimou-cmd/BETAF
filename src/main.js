@@ -499,7 +499,7 @@ function modal(type, index, clientId) {
     || state.clients.find(client => clientFullName(client) === current.client);
   const selectedClientId = clientId || currentClient?.id || state.clients[0]?.id || '';
   const selectedClient = state.clients.find(client => client.id === selectedClientId) || currentClient || current.clientSnapshot;
-  const selectedTitle = current.title || state.documentTypes[0] || '';
+  const selectedTitle = current.title || (state.documentTypes.includes(villageAttestationType) ? villageAttestationType : state.documentTypes[0] || '');
   const selectedCity = current.city || state.settings.city;
   const selectedDate = current.createdDate || new Date().toISOString().slice(0, 10);
   const savedContentTemplate = documentTemplateContent(selectedTitle);
