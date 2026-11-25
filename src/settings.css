@@ -334,6 +334,79 @@ body.dark-theme .account-actions select {
     flex-wrap: wrap;
   }
 
+  .document-modal-backdrop {
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .document-modal-backdrop .document-modal {
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    min-height: 0;
+    margin: 0;
+    padding: max(20px, env(safe-area-inset-top)) 16px 16px;
+    border-radius: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .document-modal-backdrop .document-modal h2 {
+    padding-right: 36px;
+    font-size: 24px;
+  }
+
+  .document-modal-backdrop .document-modal > .muted {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .document-modal-backdrop .document-modal label {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .document-modal-backdrop .document-modal input,
+  .document-modal-backdrop .document-modal select {
+    min-height: 48px;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .document-modal-backdrop .document-modal .attestation-fields {
+    padding: 12px;
+  }
+
+  .document-modal-backdrop .document-modal .modal-actions {
+    display: grid;
+    grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+    gap: 8px;
+    position: sticky;
+    z-index: 2;
+    bottom: 0;
+    margin: 12px -16px -16px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: #fff;
+  }
+
+  .document-modal-backdrop .document-modal .modal-actions > button {
+    min-width: 0;
+    min-height: 48px;
+    white-space: normal;
+  }
+
+  body.dark-theme .document-modal-backdrop .document-modal .modal-actions {
+    background: #1b2233;
+  }
+
   .quick-banner {
     flex-wrap: wrap;
     align-items: flex-start;
