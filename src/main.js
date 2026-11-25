@@ -147,8 +147,24 @@ const syncConfig = {
 };
 let syncTimer;
 let syncBusy = false;
+let syncPushPending = false;
+let pendingLocalChanges = false;
+let localDataRevision = 0;
+let pulledStateForUser = '';
+const markFormDirty = event => {
+  const form = event.target.closest?.('form');
+  if (form) form.dataset.dirty = 'true';
+  const settingsCard = event.target.closest?.('.settings-card');
+  if (settingsCard) settingsCard.dataset.dirty = 'true';
+};
+document.addEventListener('input', markFormDirty);
+document.addEventListener('change', markFormDirty);
+const hasUnsavedInlineForm = () => Array.from(document.querySelectorAll('#app form[data-dirty="true"], #app .settings-card[data-dirty="true"]'))
+  .some(element => element.id !== 'login-form');
 const localData = () => ({ clients: state.clients, docs: state.docs, documentTypes: state.documentTypes, documentTypeTemplates: state.documentTypeTemplates, archive: state.archive, settings: state.settings, urgencyDismissals: state.urgencyDismissals });
 const save = () => {
+  localDataRevision += 1;
+  pendingLocalChanges = !!syncConfig.token;
   localStorage.setItem('betaf-clients', JSON.stringify(state.clients));
   localStorage.setItem('betaf-docs', JSON.stringify(state.docs));
   localStorage.setItem('betaf-document-types', JSON.stringify(state.documentTypes));
@@ -174,24 +190,48 @@ async function syncRequest(path, options = {}) {
   return result;
 }
 async function syncPush() {
-  if (syncBusy || !syncConfig.token) return;
+  if (!syncConfig.token) return;
+  if (syncBusy) {
+    syncPushPending = true;
+    return;
+  }
+  const revision = localDataRevision;
   syncBusy = true;
   try {
     const result = await syncRequest('/api/state', { method: 'PUT', body: JSON.stringify({ version: syncConfig.version, data: localData() }) });
     syncConfig.version = result.version;
     syncConfig.online = true;
+    if (revision === localDataRevision) pendingLocalChanges = false;
+    else syncPushPending = true;
   } catch (error) {
     syncConfig.online = false;
     toast(`Synchronisation impossible : ${error.message}`);
-  } finally { syncBusy = false; }
+  } finally {
+    syncBusy = false;
+    if (syncPushPending) {
+      syncPushPending = false;
+      syncPush();
+    }
+  }
 }
 async function syncPull() {
-  if (!syncConfig.token || syncBusy) return;
+  if (!syncConfig.token || syncBusy || pendingLocalChanges) return;
+  const revision = localDataRevision;
   syncBusy = true;
   let republishCleanedData = false;
   try {
     const result = await syncRequest('/api/state');
     if (result.data) {
+      if (pendingLocalChanges || revision !== localDataRevision) {
+        syncPushPending = true;
+        return;
+      }
+      const userId = state.currentUser?.id || '';
+      if (pulledStateForUser === userId && result.version === syncConfig.version) {
+        syncConfig.online = true;
+        return;
+      }
+      if (hasUnsavedInlineForm()) return;
       const cleanData = cleanStarterRecords(result.data);
       state.clients = cleanData.clients;
       state.docs = cleanData.docs;
@@ -203,6 +243,7 @@ async function syncPull() {
       state.urgencyDismissals = result.data.urgencyDismissals || [];
       syncConfig.version = result.version;
       syncConfig.online = true;
+      pulledStateForUser = userId;
       saveLocalOnly();
       render();
     }
@@ -216,7 +257,10 @@ async function syncPull() {
     }
   } finally {
     syncBusy = false;
-    if (republishCleanedData) syncPush();
+    if (syncPushPending || republishCleanedData) {
+      syncPushPending = false;
+      syncPush();
+    }
   }
 }
 const saveLocalOnly = () => {
@@ -231,7 +275,7 @@ const saveLocalOnly = () => {
 async function connectServer() {
   showModal('connect-server');
 }
-setInterval(() => syncPull(), 15000);
+setInterval(() => pendingLocalChanges ? syncPush() : syncPull(), 15000);
 const saveSession = () => {
   if (syncConfig.token) localStorage.setItem('betaf-api-token', syncConfig.token);
   if (state.currentUser) localStorage.setItem('betaf-current-user', JSON.stringify(state.currentUser));
@@ -257,6 +301,9 @@ async function recordAction(action, details = '') {
 const clearSession = () => {
   syncConfig.token = '';
   syncConfig.online = false;
+  pendingLocalChanges = false;
+  syncPushPending = false;
+  pulledStateForUser = '';
   state.currentUser = null;
   localStorage.removeItem('betaf-api-token');
   localStorage.removeItem('betaf-current-user');
